@@ -1,2 +1,5 @@
-package org.example;public class ItemCollection {
+package org.example;
+
+public class ItemCollection {
+    //todo
 }

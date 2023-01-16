@@ -1,2 +1,7 @@
-package org.example;public enum ItemType {
+package org.example;
+
+public enum ItemType {
+    RAW,
+    MANUFACTURED,
+    IMPORTED
 }
