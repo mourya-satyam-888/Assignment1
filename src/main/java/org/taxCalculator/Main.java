@@ -1,4 +1,4 @@
-package org.example;
+package org.taxCalculator;
 
 import java.util.Scanner;
 

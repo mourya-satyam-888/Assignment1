@@ -1,4 +1,4 @@
-package org.example;
+package org.taxCalculator;
 
 public enum ItemType {
     RAW,
