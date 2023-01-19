@@ -2,6 +2,7 @@ package org.taxcalculator.util;
 
 import org.taxcalculator.constants.Commands;
 import org.taxcalculator.enums.ItemType;
+import org.taxcalculator.exceptions.ValidationException;
 
 /**
  * This includes all the validations required for inputs to be checked.
@@ -96,14 +97,14 @@ public class Validator {
    * @throws Exception item name may not be given
    */
   public static Boolean checkEmptyLine(String input, Boolean itemNameReceived,
-                                       Boolean itemTypeReceived) throws Exception {
+                                       Boolean itemTypeReceived) throws ValidationException {
     Boolean emptyLine = validateEmptyLine(input);
     if (emptyLine) {
       if (itemNameReceived) {
         if (itemTypeReceived) {
           return false;
         } else {
-          throw new Exception("Enter item type");
+          throw new ValidationException("Enter item type");
         }
       } else {
         return false;
@@ -119,11 +120,11 @@ public class Validator {
    * @return return array of String of command and value
    * @throws Exception Improper formatting
    */
-  public static String[] validateInput(String input) throws Exception {
+  public static String[] validateInput(String input) throws ValidationException {
     String[] inputLine = input.split(" ", 2);
     Boolean validateInput = checkInputSize(inputLine);
     if (!validateInput) {
-      throw new Exception("Enter correct formatted input");
+      throw new ValidationException("Enter correct formatted input");
     }
     return inputLine;
   }
@@ -136,9 +137,9 @@ public class Validator {
    * @return return name of item if valid
    * @throws Exception throws exception item name already exists
    */
-  public static String addName(Boolean itemNameReceived, String itemName) throws Exception {
+  public static String addName(Boolean itemNameReceived, String itemName) throws ValidationException {
     if (itemNameReceived) {
-      throw new Exception("Item name already given");
+      throw new ValidationException("Item name already given");
     }
     return itemName;
   }
@@ -153,16 +154,16 @@ public class Validator {
    * @throws Exception throws exception item type already exist,item name not given,wrong formatting
    */
   public static String addType(Boolean itemNameReceived, Boolean itemTypeReceived,
-                               String type) throws Exception {
+                               String type) throws ValidationException {
     if (!itemNameReceived) {
-      throw new Exception("Please enter item name first");
+      throw new ValidationException("Please enter item name first");
     }
     if (itemTypeReceived) {
-      throw new Exception("Item type already received");
+      throw new ValidationException("Item type already received");
     }
     Boolean validateItemType = checkItemType(type);
     if (!validateItemType) {
-      throw new Exception("Input valid type of item");
+      throw new ValidationException("Input valid type of item");
     }
     return type.toUpperCase();
   }
@@ -178,16 +179,16 @@ public class Validator {
    *                   item name not given,wrong formatting
    */
   public static double addPrice(Boolean itemNameReceived, Boolean itemPriceReceived,
-                                String price) throws Exception {
+                                String price) throws ValidationException {
     if (!itemNameReceived) {
-      throw new Exception("Please enter item name first");
+      throw new ValidationException("Please enter item name first");
     }
     if (itemPriceReceived) {
-      throw new Exception("Item Price already received");
+      throw new ValidationException("Item Price already received");
     }
     Boolean validateItemPrice = checkItemPrice(price);
     if (!validateItemPrice) {
-      throw new Exception("Please enter valid price");
+      throw new ValidationException("Please enter valid price");
     }
     return Double.parseDouble(price);
   }
@@ -203,16 +204,16 @@ public class Validator {
    *                   item name not given,wrong formatting
    */
   public static int addQuantity(Boolean itemNameReceived, Boolean itemQuantityReceived,
-                                String quantity) throws Exception {
+                                String quantity) throws ValidationException {
     if (!itemNameReceived) {
-      throw new Exception("Please enter item name first");
+      throw new ValidationException("Please enter item name first");
     }
     if (itemQuantityReceived) {
-      throw new Exception("Item quantity already received");
+      throw new ValidationException("Item quantity already received");
     }
     Boolean validateItemQuantity = checkItemQuantity(quantity);
     if (!validateItemQuantity) {
-      throw new Exception("Please enter valid quantity");
+      throw new ValidationException("Please enter valid quantity");
     }
     return Integer.parseInt(quantity);
   }

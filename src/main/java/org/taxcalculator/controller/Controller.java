@@ -2,6 +2,7 @@ package org.taxcalculator.controller;
 
 import java.util.Scanner;
 import org.taxcalculator.constants.Commands;
+import org.taxcalculator.exceptions.ValidationException;
 import org.taxcalculator.models.Item;
 import org.taxcalculator.models.ItemCollection;
 import org.taxcalculator.util.Validator;
@@ -21,9 +22,9 @@ public class Controller {
     System.out.println("Do you want to enter details of another item(y/n)?");
     while (true) {
       String userChoice = scanner.nextLine();
-      if (userChoice.equals(Commands.YES) || userChoice.equals(Commands.YES.toUpperCase())) {
+      if (userChoice.equalsIgnoreCase(Commands.YES)) {
         return true;
-      } else if (userChoice.equals(Commands.NO) || userChoice.equals(Commands.NO.toUpperCase())) {
+      } else if (userChoice.equalsIgnoreCase(Commands.NO)) {
         return false;
       } else {
         System.out.println("Please enter valid choice (y/n)");
@@ -73,14 +74,14 @@ public class Controller {
             itemQuantityReceived = true;
             break;
           default:
-            throw new Exception("Please enter valid command");
+            throw new ValidationException("Please enter valid command");
         }
-      } catch (Exception e) {
+      } catch (ValidationException e) {
         System.out.println(e.getMessage());
       }
     }
     if (itemNameReceived && itemTypeReceived) {
-      Item item = new Item(itemName, itemType, itemPrice, itemQuantity);
+      Item item = Item.createItem(itemName, itemType, itemPrice, itemQuantity);
       itemCollection.addItem(item);
     }
   }
