@@ -1,13 +1,14 @@
 package org.taxcalculator.util;
 
-import org.taxcalculator.constants.Commands;
+import org.taxcalculator.constants.CommandConstants;
+import org.taxcalculator.constants.TaxConstants;
 import org.taxcalculator.enums.ItemType;
 import org.taxcalculator.exceptions.ValidationException;
 
 /**
  * This includes all the validations required for inputs to be checked.
  */
-public class Validator {
+public final class Validator {
 
   /**
    * This method check whether line is empty or not.
@@ -15,8 +16,8 @@ public class Validator {
    * @param input Given input to be checked
    * @return It returns true in case line is empty else false
    */
-  public static Boolean validateEmptyLine(String input) {
-    if (input.equals(Commands.EMPTY)) {
+  public static Boolean validateEmptyLine(final String input) {
+    if (CommandConstants.EMPTY.equals(input)) {
       return true;
     }
     return false;
@@ -28,8 +29,8 @@ public class Validator {
    * @param inputLine it contains the input line
    * @return returns true if line is valid else false
    */
-  public static Boolean checkInputSize(String[] inputLine) {
-    if (inputLine.length < 2) {
+  public static Boolean checkInputSize(final String... inputLine) {
+    if (inputLine.length < TaxConstants.SIZE_LIMIT) {
       return false;
     }
     return true;
@@ -41,9 +42,9 @@ public class Validator {
    * @param inputType it gives type of item
    * @return returns true if the type is valid else false
    */
-  public static Boolean checkItemType(String inputType) {
+  public static Boolean checkItemType(final String inputType) {
     try {
-      String type = inputType.toUpperCase();
+      final String type = inputType.toUpperCase();
       ItemType.valueOf(type);
       return true;
     } catch (Exception e) {
@@ -57,9 +58,9 @@ public class Validator {
    * @param inputPrice It is the item price given
    * @return returns true if price is valid else false
    */
-  public static Boolean checkItemPrice(String inputPrice) {
+  public static Boolean checkItemPrice(final String inputPrice) {
     try {
-      double price = Double.parseDouble(inputPrice);
+      final double price = Double.parseDouble(inputPrice);
       if (price < 0) {
         return false;
       }
@@ -75,9 +76,9 @@ public class Validator {
    * @param inputQuantity It is the given quantity of item
    * @return returns true if quantity is valid else false
    */
-  public static Boolean checkItemQuantity(String inputQuantity) {
+  public static Boolean checkItemQuantity(final String inputQuantity) {
     try {
-      int quantity = Integer.parseInt(inputQuantity);
+      final int quantity = Integer.parseInt(inputQuantity);
       if (quantity < 0) {
         return false;
       }
@@ -96,9 +97,9 @@ public class Validator {
    * @return returns true if we should proceed further with input
    * @throws Exception item name may not be given
    */
-  public static Boolean checkEmptyLine(String input, Boolean itemNameReceived,
-                                       Boolean itemTypeReceived) throws ValidationException {
-    Boolean emptyLine = validateEmptyLine(input);
+  public static Boolean checkEmptyLine(final String input, final Boolean itemNameReceived,
+                                       final Boolean itemTypeReceived) {
+    final Boolean emptyLine = validateEmptyLine(input);
     if (emptyLine) {
       if (itemNameReceived) {
         if (itemTypeReceived) {
@@ -120,9 +121,9 @@ public class Validator {
    * @return return array of String of command and value
    * @throws Exception Improper formatting
    */
-  public static String[] validateInput(String input) throws ValidationException {
-    String[] inputLine = input.split(" ", 2);
-    Boolean validateInput = checkInputSize(inputLine);
+  public static String[] validateInput(final String input) {
+    final String[] inputLine = input.split(" ", 2);
+    final Boolean validateInput = checkInputSize(inputLine);
     if (!validateInput) {
       throw new ValidationException("Enter correct formatted input");
     }
@@ -137,7 +138,7 @@ public class Validator {
    * @return return name of item if valid
    * @throws Exception throws exception item name already exists
    */
-  public static String addName(Boolean itemNameReceived, String itemName) throws ValidationException {
+  public static String addName(final Boolean itemNameReceived, final String itemName) {
     if (itemNameReceived) {
       throw new ValidationException("Item name already given");
     }
@@ -153,15 +154,15 @@ public class Validator {
    * @return return type of item if valid
    * @throws Exception throws exception item type already exist,item name not given,wrong formatting
    */
-  public static String addType(Boolean itemNameReceived, Boolean itemTypeReceived,
-                               String type) throws ValidationException {
+  public static String addType(final Boolean itemNameReceived, final Boolean itemTypeReceived,
+                               final String type) {
     if (!itemNameReceived) {
       throw new ValidationException("Please enter item name first");
     }
     if (itemTypeReceived) {
       throw new ValidationException("Item type already received");
     }
-    Boolean validateItemType = checkItemType(type);
+    final Boolean validateItemType = checkItemType(type);
     if (!validateItemType) {
       throw new ValidationException("Input valid type of item");
     }
@@ -178,15 +179,15 @@ public class Validator {
    * @throws Exception throws exception item price already exist,
    *                   item name not given,wrong formatting
    */
-  public static double addPrice(Boolean itemNameReceived, Boolean itemPriceReceived,
-                                String price) throws ValidationException {
+  public static double addPrice(final Boolean itemNameReceived, final Boolean itemPriceReceived,
+                                final String price) {
     if (!itemNameReceived) {
       throw new ValidationException("Please enter item name first");
     }
     if (itemPriceReceived) {
       throw new ValidationException("Item Price already received");
     }
-    Boolean validateItemPrice = checkItemPrice(price);
+    final Boolean validateItemPrice = checkItemPrice(price);
     if (!validateItemPrice) {
       throw new ValidationException("Please enter valid price");
     }
@@ -203,15 +204,15 @@ public class Validator {
    * @throws Exception throws exception item quantity already exist,
    *                   item name not given,wrong formatting
    */
-  public static int addQuantity(Boolean itemNameReceived, Boolean itemQuantityReceived,
-                                String quantity) throws ValidationException {
+  public static int addQuantity(final Boolean itemNameReceived, final Boolean itemQuantityReceived,
+                                final String quantity) {
     if (!itemNameReceived) {
       throw new ValidationException("Please enter item name first");
     }
     if (itemQuantityReceived) {
       throw new ValidationException("Item quantity already received");
     }
-    Boolean validateItemQuantity = checkItemQuantity(quantity);
+    final Boolean validateItemQuantity = checkItemQuantity(quantity);
     if (!validateItemQuantity) {
       throw new ValidationException("Please enter valid quantity");
     }

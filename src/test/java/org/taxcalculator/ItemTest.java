@@ -1,7 +1,7 @@
 package org.taxcalculator;
 
 import org.junit.jupiter.api.Test;
-import org.taxcalculator.models.Item;
+import org.taxcalculator.baseclasses.Item;
 
 import static org.junit.jupiter.api.Assertions.*;
 

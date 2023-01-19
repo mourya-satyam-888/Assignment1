@@ -1,14 +1,14 @@
-package org.taxcalculator.controller;
+package org.taxcalculator.application;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.taxcalculator.models.Item;
-import org.taxcalculator.models.ItemCollection;
+import org.taxcalculator.baseclasses.Item;
+import org.taxcalculator.baseclasses.ItemCollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ControllerTest {
+class ApplicationTest {
 
   void compare(List<Item> First, List<Item> Second) {
     assertEquals(First.size(), Second.size(), "No of items added are different");
@@ -40,7 +40,7 @@ class ControllerTest {
     itemCollection.addItem(Item.createItem("item1", "RAW", 0, 0));
     itemCollection.addItem(Item.createItem("item2", "RAW", 0, 5));
     itemCollection.addItem(Item.createItem("item3", "RAW", 100, 0));
-    compare(Controller.run().getItemCollection(), itemCollection.getItemCollection());
+    compare(Application.run().getItemCollection(), itemCollection.getItemCollection());
   }
 
 }

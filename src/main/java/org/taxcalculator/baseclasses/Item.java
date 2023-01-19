@@ -1,4 +1,4 @@
-package org.taxcalculator.models;
+package org.taxcalculator.baseclasses;
 
 import org.taxcalculator.enums.ItemType;
 
@@ -6,12 +6,32 @@ import org.taxcalculator.enums.ItemType;
  * This class is used to represent an item.
  */
 public abstract class Item {
+  /**
+   * The Item name.
+   */
   protected String itemName;
+  /**
+   * The Item price.
+   */
   protected double itemPrice;
+  /**
+   * The Item tax.
+   */
   protected double itemTax;
+  /**
+   * The Item quantity.
+   */
   protected int itemQuantity;
+  /**
+   * The Item type.
+   */
   protected ItemType itemType;
 
+  /**
+   * Calculate tax double.
+   *
+   * @return the double
+   */
   protected abstract double calculateTax();
 
   private Item() {
@@ -26,7 +46,8 @@ public abstract class Item {
    * @param itemPrice    Price of the item
    * @param itemQuantity Quantity of the item
    */
-  protected Item(String itemName, String itemType, double itemPrice, int itemQuantity) {
+  protected Item(final String itemName, final String itemType,
+                 final double itemPrice, final int itemQuantity) {
     this.itemName = itemName;
     this.itemPrice = itemPrice;
     this.itemQuantity = itemQuantity;
@@ -43,9 +64,9 @@ public abstract class Item {
    * @param itemQuantity item quantity
    * @return return instance of subclass according to class
    */
-  public static Item createItem(String itemName, String itemType,
-                                double itemPrice, int itemQuantity) {
-    ItemType type = ItemType.valueOf(itemType);
+  public static Item createItem(final String itemName, final String itemType,
+                                final double itemPrice, final int itemQuantity) {
+    final ItemType type = ItemType.valueOf(itemType);
     switch (type) {
       case RAW:
         return new RawItem(itemName, itemType, itemPrice, itemQuantity);
@@ -63,7 +84,7 @@ public abstract class Item {
     return itemName;
   }
 
-  public void setItemName(String itemName) {
+  public void setItemName(final String itemName) {
     this.itemName = itemName;
   }
 
@@ -71,7 +92,7 @@ public abstract class Item {
     return itemPrice;
   }
 
-  public void setItemPrice(double itemPrice) {
+  public void setItemPrice(final double itemPrice) {
     this.itemPrice = itemPrice;
   }
 
@@ -79,7 +100,7 @@ public abstract class Item {
     return itemTax;
   }
 
-  public void setItemTax(double itemTax) {
+  public void setItemTax(final double itemTax) {
     this.itemTax = itemTax;
   }
 
@@ -87,7 +108,7 @@ public abstract class Item {
     return itemQuantity;
   }
 
-  public void setItemQuantity(int itemQuantity) {
+  public void setItemQuantity(final int itemQuantity) {
     this.itemQuantity = itemQuantity;
   }
 
@@ -95,10 +116,15 @@ public abstract class Item {
     return itemType;
   }
 
-  public void setItemType(ItemType itemType) {
+  public void setItemType(final ItemType itemType) {
     this.itemType = itemType;
   }
 
+  /**
+   * Gets final cost.
+   *
+   * @return the final cost
+   */
   public double getFinalCost() {
     return itemPrice + itemTax;
   }

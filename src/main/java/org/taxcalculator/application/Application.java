@@ -1,17 +1,24 @@
-package org.taxcalculator.controller;
+package org.taxcalculator.application;
 
 import java.util.Scanner;
-import org.taxcalculator.constants.Commands;
+import org.taxcalculator.baseclasses.Item;
+import org.taxcalculator.baseclasses.ItemCollection;
+import org.taxcalculator.constants.CommandConstants;
 import org.taxcalculator.exceptions.ValidationException;
-import org.taxcalculator.models.Item;
-import org.taxcalculator.models.ItemCollection;
 import org.taxcalculator.util.Validator;
 
 /**
  * The Controller class is used to control whole project.
  */
-public class Controller {
+public final class Application {
+  /**
+   * Scanner object to process input.
+   */
   private static Scanner scanner = new Scanner(System.in);
+
+  private Application() {
+
+  }
 
   /**
    * This method is used to ask user for addition of extra items.
@@ -21,10 +28,10 @@ public class Controller {
   public static boolean addAdditionalItem() {
     System.out.println("Do you want to enter details of another item(y/n)?");
     while (true) {
-      String userChoice = scanner.nextLine();
-      if (userChoice.equalsIgnoreCase(Commands.YES)) {
+      final String userChoice = scanner.nextLine();
+      if (CommandConstants.YES.equalsIgnoreCase(userChoice)) {
         return true;
-      } else if (userChoice.equalsIgnoreCase(Commands.NO)) {
+      } else if (CommandConstants.NO.equalsIgnoreCase(userChoice)) {
         return false;
       } else {
         System.out.println("Please enter valid choice (y/n)");
@@ -37,7 +44,7 @@ public class Controller {
    *
    * @param itemCollection requires in which item to be added
    */
-  public static void addItem(ItemCollection itemCollection) {
+  public static void addItem(final ItemCollection itemCollection) {
     Boolean itemNameReceived = false;
     Boolean itemPriceReceived = false;
     Boolean itemTypeReceived = false;
@@ -47,29 +54,30 @@ public class Controller {
     double itemPrice = 0;
     int itemQuantity = 0;
     while (!itemNameReceived || !itemPriceReceived || !itemQuantityReceived || !itemTypeReceived) {
-      String input = scanner.nextLine().strip();
+      final String input = scanner.nextLine().strip();
       try {
-        Boolean validLine = Validator.checkEmptyLine(input, itemNameReceived, itemTypeReceived);
+        final Boolean validLine;
+        validLine = Validator.checkEmptyLine(input, itemNameReceived, itemTypeReceived);
         if (!validLine) {
           break;
         }
-        String[] inputLine = Validator.validateInput(input);
-        String command = inputLine[0];
-        String value = inputLine[1];
+        final String[] inputLine = Validator.validateInput(input);
+        final String command = inputLine[0];
+        final String value = inputLine[1];
         switch (command) {
-          case Commands.NAME_CMD:
+          case CommandConstants.NAME_CMD:
             itemName = Validator.addName(itemNameReceived, value);
             itemNameReceived = true;
             break;
-          case Commands.TYPE_CMD:
+          case CommandConstants.TYPE_CMD:
             itemType = Validator.addType(itemNameReceived, itemTypeReceived, value);
             itemTypeReceived = true;
             break;
-          case Commands.PRICE_CMD:
+          case CommandConstants.PRICE_CMD:
             itemPrice = Validator.addPrice(itemNameReceived, itemPriceReceived, value);
             itemPriceReceived = true;
             break;
-          case Commands.QUANTITY_CMD:
+          case CommandConstants.QUANTITY_CMD:
             itemQuantity = Validator.addQuantity(itemNameReceived, itemQuantityReceived, value);
             itemQuantityReceived = true;
             break;
@@ -81,13 +89,13 @@ public class Controller {
       }
     }
     if (itemNameReceived && itemTypeReceived) {
-      Item item = Item.createItem(itemName, itemType, itemPrice, itemQuantity);
+      final Item item = Item.createItem(itemName, itemType, itemPrice, itemQuantity);
       itemCollection.addItem(item);
     }
   }
 
-  private static void displayItems(ItemCollection itemCollection) {
-    System.out.println("The Following Data is Given");
+  private static void displayItems(final ItemCollection itemCollection) {
+    System.out.println("The Following Data is Given: ");
     System.out.println(itemCollection.getItemCollection());
   }
 
@@ -95,7 +103,7 @@ public class Controller {
    * This method is used to run main logic of application.
    */
   public static ItemCollection run() {
-    ItemCollection itemCollection = new ItemCollection();
+    final ItemCollection itemCollection = new ItemCollection();
     do {
       addItem(itemCollection);
     } while (addAdditionalItem());

@@ -1,4 +1,4 @@
-package org.taxcalculator.models;
+package org.taxcalculator.baseclasses;
 
 import org.taxcalculator.constants.TaxConstants;
 
@@ -6,12 +6,26 @@ import org.taxcalculator.constants.TaxConstants;
  * Class for ImportedItem Type.
  */
 public class ImportedItem extends Item {
-  public ImportedItem(String itemName, String itemType, double itemPrice, int itemQuantity) {
+  /**
+   * Instantiates a new Imported item.
+   *
+   * @param itemName     the item name
+   * @param itemType     the item type
+   * @param itemPrice    the item price
+   * @param itemQuantity the item quantity
+   */
+  public ImportedItem(final String itemName, final String itemType,
+                      final double itemPrice, final int itemQuantity) {
     super(itemName, itemType, itemPrice, itemQuantity);
   }
 
+  /**
+   * Used to calculate tax to imported items.
+   *
+   * @return return tax
+   */
   protected double calculateTax() {
-    double tax = 0;
+    double tax;
     //10% import duty + tax 5rs if price under 100 after tax and import duty on cost or
     //+ 10rs if 100 to 200 else + 5%
     tax = TaxConstants.IMPORT_DUTY_PERCENTAGE * itemPrice;

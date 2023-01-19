@@ -6,8 +6,15 @@ import org.taxcalculator.enums.ExceptionCode;
  * BaseException class should only be used to throw exception in this
  * application.
  */
-public class TaxException extends RuntimeException {
-  private String detailedMessage;
+@SuppressWarnings("serial")
+public class BaseApplicationException extends RuntimeException {
+  /**
+   * detailed Message.
+   */
+  private final String detailedMessage;
+  /**
+   * ErrorCode.
+   */
   private ExceptionCode errorCode;
 
   /**
@@ -15,7 +22,7 @@ public class TaxException extends RuntimeException {
    *
    * @param message detailed message
    */
-  public TaxException(String message) {
+  public BaseApplicationException(final String message) {
     super(message);
     this.detailedMessage = message;
   }
@@ -26,7 +33,7 @@ public class TaxException extends RuntimeException {
    * @param message detailed message
    * @param code    error code
    */
-  public TaxException(String message, ExceptionCode code) {
+  public BaseApplicationException(final String message, final ExceptionCode code) {
     super(message);
     this.detailedMessage = message;
     this.errorCode = code;
