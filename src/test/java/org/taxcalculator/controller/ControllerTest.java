@@ -37,9 +37,9 @@ class ControllerTest {
     addInput(input, "-name item3", "-type raw", "-price 100", "n");
     System.setIn(new ByteArrayInputStream((input.toString()).getBytes()));
     ItemCollection itemCollection = new ItemCollection();
-    itemCollection.addItem(new Item("item1", "RAW", 0, 0));
-    itemCollection.addItem(new Item("item2", "RAW", 0, 5));
-    itemCollection.addItem(new Item("item3", "RAW", 100, 0));
+    itemCollection.addItem(Item.createItem("item1", "RAW", 0, 0));
+    itemCollection.addItem(Item.createItem("item2", "RAW", 0, 5));
+    itemCollection.addItem(Item.createItem("item3", "RAW", 100, 0));
     compare(Controller.run().getItemCollection(), itemCollection.getItemCollection());
   }
 
