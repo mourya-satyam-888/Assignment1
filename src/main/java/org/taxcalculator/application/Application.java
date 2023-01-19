@@ -1,5 +1,6 @@
 package org.taxcalculator.application;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import org.taxcalculator.baseclasses.Item;
 import org.taxcalculator.baseclasses.ItemCollection;
@@ -45,19 +46,18 @@ public final class Application {
    * @param itemCollection requires in which item to be added
    */
   public static void addItem(final ItemCollection itemCollection) {
-    Boolean itemNameReceived = false;
-    Boolean itemPriceReceived = false;
-    Boolean itemTypeReceived = false;
-    Boolean itemQuantityReceived = false;
+    final HashMap<String, Boolean> received = new HashMap<>();
     String itemName = "";
     String itemType = "";
     double itemPrice = 0;
     int itemQuantity = 0;
-    while (!itemNameReceived || !itemPriceReceived || !itemQuantityReceived || !itemTypeReceived) {
+    while (received.size() < 4) {
       final String input = scanner.nextLine().strip();
       try {
         final Boolean validLine;
-        validLine = Validator.checkEmptyLine(input, itemNameReceived, itemTypeReceived);
+        validLine = Validator.checkEmptyLine(input,
+            received.getOrDefault(CommandConstants.NAME_CMD, false),
+            received.getOrDefault(CommandConstants.TYPE_CMD, false));
         if (!validLine) {
           break;
         }
@@ -66,20 +66,28 @@ public final class Application {
         final String value = inputLine[1];
         switch (command) {
           case CommandConstants.NAME_CMD:
-            itemName = Validator.addName(itemNameReceived, value);
-            itemNameReceived = true;
+            itemName = Validator.addName(
+                received.getOrDefault(CommandConstants.NAME_CMD, false),
+                value);
+            received.put(CommandConstants.NAME_CMD, true);
             break;
           case CommandConstants.TYPE_CMD:
-            itemType = Validator.addType(itemNameReceived, itemTypeReceived, value);
-            itemTypeReceived = true;
+            itemType = Validator.addType(
+                received.getOrDefault(CommandConstants.NAME_CMD, false),
+                received.getOrDefault(CommandConstants.TYPE_CMD, false), value);
+            received.put(CommandConstants.TYPE_CMD, true);
             break;
           case CommandConstants.PRICE_CMD:
-            itemPrice = Validator.addPrice(itemNameReceived, itemPriceReceived, value);
-            itemPriceReceived = true;
+            itemPrice = Validator.addPrice(
+                received.getOrDefault(CommandConstants.NAME_CMD, false),
+                received.getOrDefault(CommandConstants.PRICE_CMD, false), value);
+            received.put(CommandConstants.PRICE_CMD, true);
             break;
           case CommandConstants.QUANTITY_CMD:
-            itemQuantity = Validator.addQuantity(itemNameReceived, itemQuantityReceived, value);
-            itemQuantityReceived = true;
+            itemQuantity = Validator.addQuantity(
+                received.getOrDefault(CommandConstants.NAME_CMD, false),
+                received.getOrDefault(CommandConstants.QUANTITY_CMD, false), value);
+            received.put(CommandConstants.QUANTITY_CMD, true);
             break;
           default:
             throw new ValidationException("Please enter valid command");
@@ -88,7 +96,8 @@ public final class Application {
         System.out.println(e.getMessage());
       }
     }
-    if (itemNameReceived && itemTypeReceived) {
+    if (received.getOrDefault(CommandConstants.NAME_CMD, false)
+        && received.getOrDefault(CommandConstants.TYPE_CMD, false)) {
       final Item item = Item.createItem(itemName, itemType, itemPrice, itemQuantity);
       itemCollection.addItem(item);
     }
