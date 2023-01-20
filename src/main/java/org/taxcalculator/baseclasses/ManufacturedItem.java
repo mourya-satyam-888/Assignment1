@@ -24,6 +24,7 @@ public class ManufacturedItem extends Item {
    *
    * @return return tax
    */
+  @Override
   protected double calculateTax() {
     double tax;
     //12.5% on cost + 2% on tax+cost

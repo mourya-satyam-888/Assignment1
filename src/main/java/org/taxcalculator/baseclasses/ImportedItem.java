@@ -24,6 +24,7 @@ public class ImportedItem extends Item {
    *
    * @return return tax
    */
+  @Override
   protected double calculateTax() {
     double tax;
     //10% import duty + tax 5rs if price under 100 after tax and import duty on cost or

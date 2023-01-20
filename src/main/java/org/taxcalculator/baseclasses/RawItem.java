@@ -24,6 +24,7 @@ public class RawItem extends Item {
    *
    * @return return tax
    */
+  @Override
   protected double calculateTax() {
     double tax;
     //12.5% on cost
